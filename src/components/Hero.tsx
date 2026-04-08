@@ -31,13 +31,21 @@ export default function Hero() {
           className="hero-img"
           style={{
             position: 'absolute', inset: 0,
-            backgroundImage: 'url(https://schattenmeister.ch/media/filer_public_thumbnails/filer_public/a1/ab/a1ab6d94-9158-4b05-a511-c5aa424ff277/smr_web_was_markisen_1.jpg__1876.0x1444.0_q85_subsampling-2_upscale.jpg)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center 30%',
-            backgroundRepeat: 'no-repeat',
+            overflow: 'hidden',
             opacity: 0.5,
           }}
-        />
+        >
+          <img
+            src="https://schattenmeister.ch/media/filer_public_thumbnails/filer_public/a1/ab/a1ab6d94-9158-4b05-a511-c5aa424ff277/smr_web_was_markisen_1.jpg__1876.0x1444.0_q85_subsampling-2_upscale.jpg"
+            alt=""
+            style={{
+              width: '100%', height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center 30%',
+              display: 'block',
+            }}
+          />
+        </div>
         {/* Bottom gradient */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '65%',

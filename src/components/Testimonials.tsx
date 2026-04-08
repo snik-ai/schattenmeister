@@ -13,7 +13,8 @@ const QUOTES = [
   { q: 'Zuverlässiger Partner für unser gesamtes Portfolio. Einheitliche Qualität über alle Objekte.', who: 'Immobilien GmbH', where: 'Zürich', stars: 5 },
 ]
 
-const CARD_W = 380
+const CARD_W_DESKTOP = 380
+const CARD_W_MOBILE = 300
 const GAP = 20
 
 function Stars({ n }: { n: number }) {
@@ -33,13 +34,15 @@ export default function Testimonials() {
   const [active, setActive] = useState(0)
   const [hovIdx, setHovIdx] = useState<number | null>(null)
   const [containerW, setContainerW] = useState(0)
+  const [cardW, setCardW] = useState(CARD_W_DESKTOP)
   const wrapRef = useRef<HTMLDivElement>(null)
   const autoRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  // Measure container width
+  // Measure container width and determine card size
   useEffect(() => {
     const measure = () => {
       if (wrapRef.current) setContainerW(wrapRef.current.offsetWidth)
+      setCardW(window.innerWidth <= 768 ? CARD_W_MOBILE : CARD_W_DESKTOP)
     }
     measure()
     window.addEventListener('resize', measure)
@@ -85,7 +88,7 @@ export default function Testimonials() {
   }
 
   // Center the active card
-  const offset = containerW / 2 - (active * (CARD_W + GAP)) - CARD_W / 2
+  const offset = containerW / 2 - (active * (cardW + GAP)) - cardW / 2
 
   // GSAP scroll reveal
   useEffect(() => {
@@ -193,7 +196,7 @@ export default function Testimonials() {
                 onClick={() => goTo(i)}
                 onMouseEnter={() => setHovIdx(i)}
                 style={{
-                  flex: `0 0 ${CARD_W}px`,
+                  flex: `0 0 ${cardW}px`,
                   background: isActive
                     ? 'linear-gradient(145deg, rgba(191,212,98,0.12) 0%, rgba(191,212,98,0.02) 100%)'
                     : 'rgba(255,255,255,0.03)',
