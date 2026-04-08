@@ -129,7 +129,7 @@ export default function Markets() {
           {ITEMS.map((item, i) => (
             <button
               key={item.id}
-              className="market-tab"
+              className={`market-tab ${active === i ? 'market-tab-active' : ''}`}
               onClick={() => changeActive(i)}
               style={{
                 display: 'flex', alignItems: 'center', gap: 16,

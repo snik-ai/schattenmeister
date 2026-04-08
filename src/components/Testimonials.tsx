@@ -63,6 +63,27 @@ export default function Testimonials() {
     startAuto()
   }
 
+  // Touch swipe support
+  const touchStart = useRef<number | null>(null)
+  const touchDelta = useRef(0)
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStart.current = e.touches[0].clientX
+    touchDelta.current = 0
+  }
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (touchStart.current === null) return
+    touchDelta.current = e.touches[0].clientX - touchStart.current
+  }
+  const handleTouchEnd = () => {
+    if (Math.abs(touchDelta.current) > 50) {
+      if (touchDelta.current < 0) goTo((active + 1) % QUOTES.length)
+      else goTo((active - 1 + QUOTES.length) % QUOTES.length)
+    }
+    touchStart.current = null
+    touchDelta.current = 0
+  }
+
   // Center the active card
   const offset = containerW / 2 - (active * (CARD_W + GAP)) - CARD_W / 2
 
@@ -138,7 +159,14 @@ export default function Testimonials() {
       </div>
 
       {/* Carousel */}
-      <div ref={wrapRef} className="testi-track" style={{ position: 'relative' }}>
+      <div
+        ref={wrapRef}
+        className="testi-track"
+        style={{ position: 'relative', touchAction: 'pan-y' }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         {/* Fade masks */}
         <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 120, zIndex: 2, background: 'linear-gradient(to right, #000, transparent)', pointerEvents: 'none' }}/>
         <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 120, zIndex: 2, background: 'linear-gradient(to left, #000, transparent)', pointerEvents: 'none' }}/>
