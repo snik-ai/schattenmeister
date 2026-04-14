@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { gsap } from 'gsap'
 
 const LINKS = [
-  { label: 'Markisen',  sub: 'Sonnenstoren & Terrassenbeschattung', href: '#markisen' },
-  { label: 'Rollladen', sub: 'Sicherheit & Wärmedämmung',           href: '#rollladen' },
-  { label: 'Plissees',  sub: 'Innenraum-Lichtschutz',               href: '#plissees' },
-  { label: 'Reparaturen', sub: 'Service & Wartung',                   href: '#service' },
-  { label: 'Unternehmen', sub: 'Team & Referenzen',                  href: '#team' },
-  { label: 'Kontakt',   sub: 'Beratung anfragen',                    href: '#kontakt' },
+  { label: 'Markisen',    sub: 'Sonnenstoren & Terrassenbeschattung', href: '/markisen' },
+  { label: 'Rollladen',   sub: 'Sicherheit & Wärmedämmung',          href: '/#rollladen' },
+  { label: 'Plissees',    sub: 'Innenraum-Lichtschutz',              href: '/#plissees' },
+  { label: 'Referenzen',  sub: 'Ausgewählte Projekte',               href: '/#referenzen' },
+  { label: 'Unternehmen', sub: 'Team & Geschichte',                  href: '/unternehmen' },
+  { label: 'Kontakt',     sub: 'Beratung anfragen',                  href: '/kontakt' },
 ]
 
 export default function Navbar() {
@@ -16,6 +17,27 @@ export default function Navbar() {
   const [hidden, setHidden] = useState(false)
   const [hovered, setHovered] = useState<number | null>(null)
   const prevScrollY = useRef(0)
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const handleNav = (href: string) => {
+    setOpen(false)
+    if (href.startsWith('/#')) {
+      const id = href.slice(2)
+      if (location.pathname === '/') {
+        const el = document.getElementById(id)
+        if (el) el.scrollIntoView({ behavior: 'smooth' })
+      } else {
+        navigate('/')
+        setTimeout(() => {
+          const el = document.getElementById(id)
+          if (el) el.scrollIntoView({ behavior: 'smooth' })
+        }, 100)
+      }
+    } else {
+      navigate(href)
+    }
+  }
 
   useEffect(() => {
     const threshold = document.documentElement.scrollHeight * 0.07
@@ -74,7 +96,7 @@ export default function Navbar() {
         display: 'flex', alignItems: 'center',
         justifyContent: 'space-between', padding: '0 32px',
       }}>
-        <a href="#" onClick={() => setOpen(false)} style={{ zIndex: 10001, position: 'relative' }}>
+        <a href="/" onClick={(e) => { e.preventDefault(); setOpen(false); navigate('/') }} style={{ zIndex: 10001, position: 'relative' }}>
           <img
             src="https://schattenmeister.ch/static/assets/images/schatten-logo-white.svg"
             alt="Schattenmeister"
@@ -145,7 +167,7 @@ export default function Navbar() {
             <a
               key={l.label}
               href={l.href}
-              onClick={() => setOpen(false)}
+              onClick={(e) => { e.preventDefault(); handleNav(l.href) }}
               className="nav-link-item"
               onMouseEnter={() => setHovered(i)}
               onMouseLeave={() => setHovered(null)}
@@ -215,7 +237,7 @@ export default function Navbar() {
               }
             </div>
           ))}
-          <a href="#kontakt" onClick={() => setOpen(false)} style={{
+          <a href="/kontakt" onClick={(e) => { e.preventDefault(); handleNav('/kontakt') }} style={{
             background: 'var(--accent)', color: '#000',
             fontSize: 15, fontWeight: 500,
             padding: '11px 24px', borderRadius: 980,

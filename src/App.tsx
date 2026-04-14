@@ -1,32 +1,22 @@
 import './index.css'
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import Products from './components/Products'
-import Markets from './components/Markets'
-import Process from './components/Process'
-import Team from './components/Team'
-import Testimonials from './components/Testimonials'
-import References from './components/References'
-import Contact from './components/Contact'
-import Footer from './components/Footer'
-import FloatingCTA from './components/FloatingCTA'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Layout from './components/Layout'
+import HomePage from './pages/HomePage'
+import MarkisenPage from './pages/MarkisenPage'
+import UnternehmenPage from './pages/UnternehmenPage'
+import KontaktPage from './pages/KontaktPage'
 
 export default function App() {
   return (
-    <>
-      <Navbar />
-      <main>
-        <Hero />
-        <References />
-        <Products />
-        <Markets />
-        <Process />
-        <Team />
-        <Testimonials />
-        <Contact />
-      </main>
-      <Footer />
-      <FloatingCTA />
-    </>
+    <BrowserRouter>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/markisen" element={<MarkisenPage />} />
+          <Route path="/unternehmen" element={<UnternehmenPage />} />
+          <Route path="/kontakt" element={<KontaktPage />} />
+        </Routes>
+      </Layout>
+    </BrowserRouter>
   )
 }

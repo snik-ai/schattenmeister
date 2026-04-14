@@ -115,6 +115,50 @@ a { text-decoration: none; color: inherit; }
     object-fit: cover !important;
   }
 
+  /* Portfolio grid: stack on mobile */
+  .port-grid {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: 320px 240px 240px !important;
+  }
+  .port-grid > div:first-child {
+    grid-row: auto !important;
+  }
+  .port-grid-row2 {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: 260px 260px !important;
+  }
+
+  /* Project Detail: stack vision */
+  .pd-vision-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .pd-meta-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Markisen page */
+  .mk-types-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .mk-feats-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .mk-feats-grid > div { border-radius: 12px !important; }
+
+  /* Unternehmen page */
+  .un-story-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .un-team-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .un-vals-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .un-loc-grid {
+    grid-template-columns: 1fr !important;
+  }
+
   /* Contact form: stack */
   .contact-grid {
     grid-template-columns: 1fr !important;

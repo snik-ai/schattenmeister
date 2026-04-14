@@ -1,7 +1,24 @@
-const COL = {
-  Leistungen: ['Markisen & Sonnenstoren', 'Rollladen & Lamellenstoren', 'Plissees & Jalousien', 'Insektenschutz', 'Reparaturen & Service'],
-  Einsatzgebiete: ['Wohneigentum', 'Gewerbe', 'Gastronomie', 'Öffentliche Einrichtungen', 'Mietwohnungen'],
-  Unternehmen: ['Über uns', 'Team', 'Referenzen', 'Karriere', 'Kontakt'],
+import { useNavigate } from 'react-router-dom'
+
+const COL: Record<string, { label: string; href: string }[]> = {
+  Leistungen: [
+    { label: 'Markisen & Sonnenstoren', href: '/markisen' },
+    { label: 'Rollladen & Lamellenstoren', href: '/#rollladen' },
+    { label: 'Plissees & Jalousien', href: '/#plissees' },
+    { label: 'Reparaturen & Service', href: '/#service' },
+  ],
+  Einsatzgebiete: [
+    { label: 'Wohneigentum', href: '/#wohn' },
+    { label: 'Gewerbe', href: '/#gewerbe' },
+    { label: 'Gastronomie', href: '/#gastro' },
+    { label: 'Öffentliche Einrichtungen', href: '/#public' },
+  ],
+  Unternehmen: [
+    { label: 'Über uns', href: '/unternehmen' },
+    { label: 'Team', href: '/unternehmen' },
+    { label: 'Referenzen', href: '/#referenzen' },
+    { label: 'Kontakt', href: '/kontakt' },
+  ],
 }
 
 const CONTACTS = [
@@ -12,6 +29,25 @@ const CONTACTS = [
 ]
 
 export default function Footer() {
+  const navigate = useNavigate()
+  const handleNav = (href: string) => {
+    if (href.startsWith('/#')) {
+      const id = href.slice(2)
+      if (window.location.pathname === '/') {
+        const el = document.getElementById(id)
+        if (el) el.scrollIntoView({ behavior: 'smooth' })
+      } else {
+        navigate('/')
+        setTimeout(() => {
+          const el = document.getElementById(id)
+          if (el) el.scrollIntoView({ behavior: 'smooth' })
+        }, 100)
+      }
+    } else {
+      navigate(href)
+      window.scrollTo(0, 0)
+    }
+  }
   return (
     <footer style={{ background: '#000' }}>
       {/* CTA band */}
@@ -39,11 +75,11 @@ export default function Footer() {
             marginBottom: 40, maxWidth: 480, margin: '0 auto 40px',
           }}>Persönliche Beratung, massgeschneiderte Lösung — Antwort innerhalb 1 Werktag.</p>
           <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="#kontakt" style={{
+            <a href="/kontakt" onClick={(e) => { e.preventDefault(); handleNav('/kontakt') }} style={{
               background: 'var(--accent)', color: '#000',
               fontSize: 16, fontWeight: 500,
               padding: '14px 36px', borderRadius: 980,
-              textDecoration: 'none',
+              textDecoration: 'none', cursor: 'pointer',
             }}>Beratung anfragen</a>
             <a href="tel:+41445944445" style={{
               border: '1px solid rgba(255,255,255,0.18)',
@@ -160,16 +196,17 @@ export default function Footer() {
                 marginBottom: 20,
               }}>{title}</div>
               {links.map(l => (
-                <a key={l} href="#" style={{
+                <a key={l.label} href={l.href} onClick={(e) => { e.preventDefault(); handleNav(l.href) }} style={{
                   display: 'block', fontSize: 16,
                   color: 'rgba(255,255,255,0.44)',
                   marginBottom: 14, letterSpacing: '-0.01em',
                   textDecoration: 'none',
                   transition: 'color 0.2s',
+                  cursor: 'pointer',
                 }}
                 onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
                 onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.44)')}
-                >{l}</a>
+                >{l.label}</a>
               ))}
             </div>
           ))}
